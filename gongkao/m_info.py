@@ -5,6 +5,8 @@ from lxml import etree
 import requests
 from bs4 import BeautifulSoup
 import sys
+import urllib2
+import demjson
 
 head = {
 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
@@ -27,17 +29,37 @@ def detail_url(url):
 
 def detail(url):
     # 获取字符串格式的html_doc。由于content为bytes类型，故需要decode()
-    html_doc = requests.get(url).content.decode("unicode-escape")
+    html_doc = urllib2.urlopen(url)
     # 使用BeautifulSoup模块对页面文件进行解析
-    soup = BeautifulSoup(html_doc, 'html.parser')
-    links = soup.find_all('title')
-    print(links)
+    soup = BeautifulSoup(html_doc, 'lxml')
+    timu = timu_detail(soup) #题目
+    print(timu)
+    xuanxiang = soup.find_all("input")
+
+    jsonData = []
+    i = 0;
+    for input in xuanxiang:
+        jsonData.append(input)
+    text = jsonData #答案和选项
+    print(text)
+
+"""
+题目
+"""
+def timu_detail(soup):
+    links = soup.h2
+    images = links.find('img')
+    if images is None:
+        timu = links.string  # 题目
+    else:
+        timu = images['src']  # 题目
+    return timu
 
 if __name__ == '__main__':
     if sys.getdefaultencoding() != 'utf-8':
         reload(sys)
         sys.setdefaultencoding('utf-8')
     for item in INDEX_LIST:
-        time.sleep(10)
+        time.sleep(1)
         url = item['url']
         detail(url)

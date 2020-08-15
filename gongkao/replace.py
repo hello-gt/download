@@ -2,14 +2,11 @@
 import os
 import shutil,io
 
-dir_path = "F:/lgt/svn/m.tiandaoedu.com/public/yxk/" ##日志目录
+dir_path = "H:/1/duoxiang" ##日志目录
 #old_data = '<script type="text/javascript" src="http://m.tiandaoedu.com/Public/scripts/loading.js">' ##旧字符
 #new_data = '<!--<script type="text/javascript" src="http://m.tiandaoedu.com/Public/scripts/loading.js">-->' ##新字符
-old_data = 'http://m.tiandaoedu.com/Public' ##旧字符
-new_data = 'http://m.tiandaoedu.com/topic_public' ##新字符
-
-#old_data = '<a href="http://u.tiandaoedu.com/denglu.html?from=http://m.tiandaoedu.com/yxk/bk-all-all-tj/" style="margin:10px 5px;color:white;">登录/注册</a>' ##旧字符
-#new_data = '' ##新字符
+old_data = '题为1关，请收藏当前位置，方便下次学习' ##旧字符
+new_data = '' ##新字符
 
 def walkFile(file):
     """
@@ -18,16 +15,17 @@ def walkFile(file):
     :return str
     """
     for root, dirs, files in os.walk(file):
-
         # root 表示当前正在访问的文件夹路径
         # dirs 表示该文件夹下的子目录名list
         # files 表示该文件夹下的文件list
 
+        i = 0;
         # 遍历文件
         for f in files:
             file = os.path.join(root, f)
             print(file)
-            alter(file,old_data,new_data) #替换字符
+            i = i+1;
+            alter(file,old_data,new_data,i) #替换字符
 
 
             #newdir = os.path.join(root,f[0:-5])
@@ -35,7 +33,9 @@ def walkFile(file):
             #createflie(file,newdir,new)
 
 
-def alter(file,old_str,new_str):
+def alter(file,old_str,new_str,num):
+    #file = unicode(file, "utf8")
+
     """
     替换文件中的字符串
     :param file:文件名
@@ -51,6 +51,8 @@ def alter(file,old_str,new_str):
             file_data += line
     with io.open(file,"w") as f:
         f.write(file_data)
+    newname = 'csdx_'.str(num)
+    os.rename(file, newname)
 
 def createflie(file,newdir,new):
     try:

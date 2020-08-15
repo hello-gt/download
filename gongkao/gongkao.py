@@ -59,7 +59,7 @@ def mkdir(path):
 
 if __name__ == '__main__':
     for item in INDEX_LIST:
-        num = random.randint(80,3000)
+        num = random.randint(1,9)
         time.sleep(num)
         url = item['url']
         print url + " --> "
